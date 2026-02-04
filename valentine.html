@@ -194,30 +194,34 @@
             }
         }
 
-        .music-control {
+        #musicBtn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border: none;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 28px;
+            width: 65px;
+            height: 65px;
+            font-size: 30px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
             -webkit-tap-highlight-color: transparent;
+            display: none;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Ta musique ElGrandeToto - Blue Love -->
+    <!-- Audio - chemin relatif pour GitHub Pages -->
     <audio id="loveMusic" loop preload="auto">
-        <source src="Elgrandetoto BLUE LOVE Lyrics video.mp3" type="audio/mpeg">
+        <source src="./Elgrandetoto%20BLUE%20LOVE%20Lyrics%20video.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Bouton musique global (ne sera pas détruit) -->
+    <button id="musicBtn">🔇</button>
 
     <div class="container" id="main">
         <h1>💖 Mon amour 💖</h1>
@@ -232,73 +236,57 @@
 
     <script>
         const music = document.getElementById('loveMusic');
+        const musicBtn = document.getElementById('musicBtn');
         let isMusicPlaying = false;
-        let noButton = document.getElementById('no');
-        let yesButton = document.getElementById('yes');
+        const noButton = document.getElementById('no');
+        const yesButton = document.getElementById('yes');
+        const mainContainer = document.getElementById('main');
 
-        // Vibration pattern coeur
+        // Vibration
         function vibrateHeartbeat() {
             if ('vibrate' in navigator) {
                 navigator.vibrate([100, 50, 100, 200, 100, 50, 100]);
             }
         }
 
-        // Play music
-        function playMusic() {
-            music.volume = 0.7;
-            const playPromise = music.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    isMusicPlaying = true;
-                    updateMusicButton();
-                }).catch(err => {
-                    console.log('Autoplay bloqué:', err);
-                    isMusicPlaying = false;
-                    updateMusicButton();
-                });
-            }
-        }
-
-        // Toggle music
-        function toggleMusic() {
+        // Toggle musique
+        musicBtn.addEventListener('click', function () {
             if (isMusicPlaying) {
                 music.pause();
                 isMusicPlaying = false;
+                musicBtn.textContent = '🔇';
             } else {
                 music.play().then(() => {
                     isMusicPlaying = true;
-                }).catch(err => console.log(err));
+                    musicBtn.textContent = '🔊';
+                }).catch(err => {
+                    console.log('Erreur lecture:', err);
+                });
             }
-            updateMusicButton();
-        }
+        });
 
-        function updateMusicButton() {
-            const btn = document.getElementById('musicBtn');
-            if (btn) {
-                btn.textContent = isMusicPlaying ? '🔊' : '🔇';
-            }
-        }
-
-        // BOUTON OUI - Clic
+        // BOUTON OUI
         yesButton.addEventListener('click', function (e) {
             e.preventDefault();
             accept();
         });
 
-        // BOUTON NON - Empêcher le clic et juste bouger
+        // BOUTON NON - juste bouger
         noButton.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             moveNo();
+            return false;
         });
 
         noButton.addEventListener('touchstart', function (e) {
             e.preventDefault();
             e.stopPropagation();
             moveNo();
+            return false;
         }, { passive: false });
 
-        noButton.addEventListener('mouseenter', function (e) {
+        noButton.addEventListener('mouseenter', function () {
             moveNo();
         });
 
@@ -324,86 +312,46 @@
             vibrateHeartbeat();
             setTimeout(vibrateHeartbeat, 800);
             setTimeout(vibrateHeartbeat, 1600);
-            setTimeout(vibrateHeartbeat, 2400);
 
             // Play music
-            playMusic();
-
-            // Changer le contenu
-            document.body.innerHTML = `
-        <audio id="loveMusic" loop preload="auto">
-          <source src="Elgrandetoto BLUE LOVE Lyrics video.mp3" type="audio/mpeg">
-        </audio>
-        
-        <div class="container">
-          <div class="success">
-            <h1>🥰 Mon Amour 🥰</h1>
-            <div class="big-hearts">💕💖💕</div>
-            
-            <div class="love-message">
-              <p>Chaque jour avec toi est un cadeau,<br>
-              mais aujourd'hui j'avais envie de te le redire autrement.</p>
-              
-              <p>Merci d'être toi,<br>
-              merci pour ton sourire, ta douceur,<br>
-              et tout l'amour que tu mets dans ma vie.</p>
-              
-              <p>Je suis tellement heureux de partager ce chemin avec toi.</p>
-              
-              <p>Je t'aime plus que les mots ne peuvent le dire ❤️</p>
-            </div>
-            
-            <div class="signature">~ Ton Valentin 💘</div>
-          </div>
-        </div>
-        
-        <button class="music-control" id="musicBtn" onclick="toggleMusicNew()">🔊</button>
-      `;
-
-            // Re-setup music après changement du DOM
-            const newMusic = document.getElementById('loveMusic');
-            newMusic.volume = 0.7;
-            newMusic.play().then(() => {
+            music.volume = 0.7;
+            music.play().then(() => {
                 isMusicPlaying = true;
-                document.getElementById('musicBtn').textContent = '🔊';
+                musicBtn.textContent = '🔊';
             }).catch(err => {
-                isMusicPlaying = false;
-                document.getElementById('musicBtn').textContent = '🔇';
+                console.log('Autoplay bloqué:', err);
+                musicBtn.textContent = '🔇';
             });
 
-            // Injecter la fonction toggle
-            window.toggleMusicNew = function () {
-                const m = document.getElementById('loveMusic');
-                const btn = document.getElementById('musicBtn');
-                if (isMusicPlaying) {
-                    m.pause();
-                    isMusicPlaying = false;
-                    btn.textContent = '🔇';
-                } else {
-                    m.play().then(() => {
-                        isMusicPlaying = true;
-                        btn.textContent = '🔊';
-                    });
-                }
-            };
+            // Afficher le bouton musique
+            musicBtn.style.display = 'block';
 
-            // Coeurs flottants
-            startHeartsNew();
+            // Nouveau contenu
+            mainContainer.innerHTML = `
+        <div class="success">
+          <h1>🥰 Je savais que tu dirais oui ❤️</h1>
+          <div class="big-hearts">💕💖💕</div>
+          
+          <div class="love-message">
+            <p>Si je devais te choisir encore et encore,<br>
+            je le ferais sans hésiter.</p>
+            
+            <p>Aujourd'hui, demain, et tous les jours qui suivront,<br>
+            je veux être à tes côtés.</p>
+            
+            <p>Merci d'être ma Valentine… et bien plus encore 💖</p>
+            
+            <p>Je t'aime plus que les mots ne peuvent le dire ❤️</p>
+          </div>
+          
+          <div class="signature">~ Ton Valentin 💘</div>
+        </div>
+      `;
+
+            // Continuer les coeurs
+            startHearts();
         }
 
-        function startHeartsNew() {
-            setInterval(() => {
-                const heart = document.createElement("div");
-                heart.className = "heart";
-                heart.innerHTML = ["❤️", "💕", "💖", "💗", "💓"][Math.floor(Math.random() * 5)];
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }, 500);
-        }
-
-        // Coeurs initiaux
         function startHearts() {
             setInterval(() => {
                 const heart = document.createElement("div");
