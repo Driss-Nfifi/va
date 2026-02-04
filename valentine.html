@@ -1,373 +1,224 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ma Valentine 💘</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ma Valentine 💘</title>
 
-        body {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            font-family: 'Georgia', serif;
-            text-align: center;
-            min-height: 100vh;
-            min-height: 100dvh;
-            padding: 40px 20px;
-            color: #fff;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
 
-        .container {
-            max-width: 500px;
-            width: 100%;
-            padding: 20px;
-        }
+    body{
+      background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+      font-family:'Georgia',serif;
+      color:#fff;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:40px 20px;
+      overflow-x:hidden;
+      text-align:center;
+    }
 
-        h1 {
-            font-size: clamp(2em, 8vw, 3em);
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-        }
+    .container{max-width:500px;width:100%}
 
-        h2 {
-            font-size: clamp(1.2em, 5vw, 1.8em);
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-        }
+    h1{font-size:clamp(2em,8vw,3em);margin-bottom:15px;text-shadow:2px 2px 10px rgba(0,0,0,.2)}
+    h2{font-size:clamp(1.2em,5vw,1.8em);margin-bottom:30px}
+    p{font-size:clamp(1em,4vw,1.4em);margin-bottom:25px}
 
-        p {
-            font-size: clamp(1em, 4vw, 1.4em);
-            margin-bottom: 25px;
-        }
+    .buttons{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+      align-items:center;
+      position:relative;
+      min-height:150px;
+    }
 
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            position: relative;
-            min-height: 150px;
-        }
+    button{
+      font-size:clamp(1em,4vw,1.2em);
+      padding:15px 40px;
+      border:none;
+      border-radius:30px;
+      cursor:pointer;
+      box-shadow:0 4px 15px rgba(0,0,0,.2);
+      -webkit-tap-highlight-color:transparent;
+    }
 
-        button {
-            font-size: clamp(1em, 4vw, 1.2em);
-            padding: 15px 40px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            touch-action: manipulation;
-            font-family: 'Arial', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+    button:active{transform:scale(.95)}
 
-        button:active {
-            transform: scale(0.95);
-        }
+    #yes{
+      background:linear-gradient(135deg,#ff4d6d,#ff758c);
+      color:#fff;
+      font-weight:bold;
+    }
 
-        #yes {
-            background: linear-gradient(135deg, #ff4d6d, #ff758c);
-            color: white;
-            font-weight: bold;
-        }
+    #no{
+      background:#fff;
+      color:#ff4d6d;
+      font-weight:bold;
+    }
 
-        #yes:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
-        }
+    .heart{
+      position:fixed;
+      font-size:24px;
+      animation:float 5s linear infinite;
+      opacity:.7;
+      pointer-events:none;
+      z-index:-1;
+    }
 
-        #no {
-            background-color: #fff;
-            color: #ff4d6d;
-            font-weight: bold;
-            transition: none;
-        }
+    @keyframes float{
+      from{transform:translateY(110vh);opacity:0}
+      to{transform:translateY(-10vh);opacity:0}
+    }
 
-        .heart {
-            position: fixed;
-            font-size: clamp(18px, 5vw, 28px);
-            animation: float 5s infinite ease-in;
-            opacity: 0.7;
-            pointer-events: none;
-            z-index: -1;
-        }
+    .success h1{
+      font-size:clamp(1.8em,8vw,2.5em);
+      animation:pulse 1.5s infinite;
+      margin-bottom:20px;
+    }
 
-        @keyframes float {
-            0% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
+    @keyframes pulse{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.05)}
+    }
 
-            50% {
-                opacity: 1;
-            }
+    .love-message{
+      background:rgba(255,255,255,.2);
+      backdrop-filter:blur(10px);
+      border-radius:20px;
+      padding:25px 20px;
+      line-height:1.8;
+      animation:fadeIn 1.5s ease;
+    }
 
-            100% {
-                transform: translateY(-10vh);
-                opacity: 0;
-            }
-        }
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:translateY(0)}
+    }
 
-        .success h1 {
-            font-size: clamp(1.8em, 8vw, 2.5em);
-            animation: pulse 1.5s infinite;
-            margin-bottom: 25px;
-        }
+    .signature{
+      margin-top:20px;
+      font-style:italic;
+      font-size:1.3em;
+    }
 
-        .success .love-message {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px 20px;
-            margin: 20px 0;
-            font-size: clamp(1em, 4vw, 1.2em);
-            line-height: 1.8;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-            animation: fadeIn 2s ease-out;
-        }
-
-        .success .love-message p {
-            margin-bottom: 15px;
-        }
-
-        .success .love-message p:last-child {
-            margin-bottom: 0;
-            font-weight: bold;
-            font-size: clamp(1.1em, 4.5vw, 1.4em);
-        }
-
-        .success .signature {
-            font-style: italic;
-            margin-top: 20px;
-            font-size: clamp(1.2em, 5vw, 1.5em);
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .big-hearts {
-            font-size: clamp(2em, 10vw, 3em);
-            margin: 15px 0;
-            animation: bounce 0.6s infinite alternate;
-        }
-
-        @keyframes bounce {
-            from {
-                transform: translateY(0);
-            }
-
-            to {
-                transform: translateY(-10px);
-            }
-        }
-
-        #musicBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border: none;
-            border-radius: 50%;
-            width: 65px;
-            height: 65px;
-            font-size: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            z-index: 9999;
-            -webkit-tap-highlight-color: transparent;
-            display: none;
-        }
-    </style>
+    #musicBtn{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      width:65px;
+      height:65px;
+      border-radius:50%;
+      border:none;
+      font-size:30px;
+      background:#fff;
+      box-shadow:0 4px 15px rgba(0,0,0,.3);
+      display:none;
+      z-index:9999;
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- Audio - chemin relatif pour GitHub Pages -->
-    <audio id="loveMusic" loop playsinline>
-      <source src="tst.mp3" type="audio/mpeg">
-    </audio>
+  <!-- AUDIO -->
+  <audio id="loveMusic" loop playsinline>
+    <source src="tst.mp3" type="audio/mpeg">
+  </audio>
 
-    <!-- Bouton musique global (ne sera pas détruit) -->
-    <button id="musicBtn">🔇</button>
+  <button id="musicBtn">🔇</button>
 
-    <div class="container" id="main">
-        <h1>💖 Mon amour 💖</h1>
-        <p>J'ai une question très importante…</p>
-        <h2>Veux-tu être ma Valentine ? 💌</h2>
+  <div class="container" id="main">
+    <h1>💖 Mon amour 💖</h1>
+    <p>J’ai une question très importante…</p>
+    <h2>Veux-tu être ma Valentine ? 💌</h2>
 
-        <div class="buttons">
-            <button id="yes">OUI 😍</button>
-            <button id="no">Non 🙃</button>
-        </div>
+    <div class="buttons">
+      <button id="yes">OUI 😍</button>
+      <button id="no">Non 🙃</button>
     </div>
+  </div>
 
-    <script>
-        const music = document.getElementById('loveMusic');
-        const musicBtn = document.getElementById('musicBtn');
-        let isMusicPlaying = false;
-        const noButton = document.getElementById('no');
-        const yesButton = document.getElementById('yes');
-        const mainContainer = document.getElementById('main');
+<script>
+const music = document.getElementById('loveMusic');
+const musicBtn = document.getElementById('musicBtn');
+const main = document.getElementById('main');
+const noBtn = document.getElementById('no');
+let playing = false;
 
-        // Vibration
-        function vibrateHeartbeat() {
-            if ('vibrate' in navigator) {
-                navigator.vibrate([100, 50, 100, 200, 100, 50, 100]);
-            }
-        }
+// Vibrations
+function vibrate(){
+  navigator.vibrate?.([100,50,100,200,100]);
+}
 
-        // Toggle musique
-        musicBtn.addEventListener('click', function () {
-            if (isMusicPlaying) {
-                music.pause();
-                isMusicPlaying = false;
-                musicBtn.textContent = '🔇';
-            } else {
-                music.play().then(() => {
-                    isMusicPlaying = true;
-                    musicBtn.textContent = '🔊';
-                }).catch(err => {
-                    console.log('Erreur lecture:', err);
-                });
-            }
-        });
+// Bouton NON qui fuit
+function moveNo(){
+  const x = Math.random()*(window.innerWidth-120);
+  const y = Math.random()*(window.innerHeight-60);
+  noBtn.style.position='fixed';
+  noBtn.style.left=x+'px';
+  noBtn.style.top=y+'px';
+}
+noBtn.addEventListener('click',e=>{e.preventDefault();moveNo()});
+noBtn.addEventListener('touchstart',e=>{e.preventDefault();moveNo()},{passive:false});
+noBtn.addEventListener('mouseenter',moveNo);
 
-        // BOUTON OUI
-        yesButton.addEventListener('click', function (e) {
-            e.preventDefault();
-            accept();
-        });
+// Bouton OUI
+document.getElementById('yes').addEventListener('click',()=>{
+  vibrate();
+  setTimeout(vibrate,700);
 
-        // BOUTON NON - juste bouger
-        noButton.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            moveNo();
-            return false;
-        });
+  music.currentTime = 0;
+  music.volume = 0.7;
+  music.play().then(()=>{
+    playing = true;
+    musicBtn.textContent='🔊';
+  }).catch(()=>{
+    musicBtn.textContent='▶️';
+  });
 
-        noButton.addEventListener('touchstart', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            moveNo();
-            return false;
-        }, { passive: false });
+  musicBtn.style.display='block';
 
-        noButton.addEventListener('mouseenter', function () {
-            moveNo();
-        });
+  main.innerHTML=`
+    <div class="success">
+      <h1>🥰 Je savais que tu dirais oui ❤️</h1>
+      <div class="love-message">
+        <p>Si je devais te choisir encore et encore,<br>je le ferais sans hésiter.</p>
+        <p>Aujourd’hui, demain, et tous les jours qui suivront,<br>je veux être à tes côtés.</p>
+        <p>Merci d’être ma Valentine… et bien plus encore 💖</p>
+        <p>Je t’aime plus que les mots ne peuvent le dire ❤️</p>
+      </div>
+      <div class="signature">~ Ton Valentin 💘</div>
+    </div>
+  `;
+});
 
-        function moveNo() {
-            const padding = 20;
-            const btnWidth = noButton.offsetWidth;
-            const btnHeight = noButton.offsetHeight;
+// Toggle musique
+musicBtn.onclick=()=>{
+  if(playing){
+    music.pause();
+    musicBtn.textContent='🔇';
+    playing=false;
+  }else{
+    music.play();
+    musicBtn.textContent='🔊';
+    playing=true;
+  }
+};
 
-            const maxX = window.innerWidth - btnWidth - padding;
-            const maxY = window.innerHeight - btnHeight - padding;
-
-            const x = padding + Math.random() * (maxX - padding);
-            const y = padding + Math.random() * (maxY - padding);
-
-            noButton.style.position = "fixed";
-            noButton.style.left = x + "px";
-            noButton.style.top = y + "px";
-            noButton.style.zIndex = "100";
-        }
-
-        function accept() {
-            // Vibrations
-            vibrateHeartbeat();
-            setTimeout(vibrateHeartbeat, 800);
-            setTimeout(vibrateHeartbeat, 1600);
-
-            // Play music
-            music.volume = 0.7;
-            music.play().then(() => {
-                isMusicPlaying = true;
-                musicBtn.textContent = '🔊';
-            }).catch(err => {
-                console.log('Autoplay bloqué:', err);
-                musicBtn.textContent = '🔇';
-            });
-
-            // Afficher le bouton musique
-            musicBtn.style.display = 'block';
-
-            // Nouveau contenu
-            mainContainer.innerHTML = `
-        <div class="success">
-          <h1>🥰 Je savais que tu dirais oui ❤️</h1>
-          <div class="big-hearts">💕💖💕</div>
-          
-          <div class="love-message">
-            <p>Si je devais te choisir encore et encore,<br>
-            je le ferais sans hésiter.</p>
-            
-            <p>Aujourd'hui, demain, et tous les jours qui suivront,<br>
-            je veux être à tes côtés.</p>
-            
-            <p>Merci d'être ma Valentine… et bien plus encore 💖</p>
-            
-            <p>Je t'aime plus que les mots ne peuvent le dire ❤️</p>
-          </div>
-          
-          <div class="signature">~ Ton Valentin 💘</div>
-        </div>
-      `;
-
-            // Continuer les coeurs
-            startHearts();
-        }
-
-        function startHearts() {
-            setInterval(() => {
-                const heart = document.createElement("div");
-                heart.className = "heart";
-                heart.innerHTML = ["❤️", "💕", "💖", "💗", "💓"][Math.floor(Math.random() * 5)];
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }, 500);
-        }
-
-        startHearts();
-    </script>
+// Cœurs
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.textContent=['❤️','💖','💕','💗'][Math.floor(Math.random()*4)];
+  h.style.left=Math.random()*100+'vw';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},500);
+</script>
 
 </body>
-
 </html>
-
