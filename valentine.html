@@ -1,111 +1,333 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Ma Valentine 💘</title>
-  <style>
-    body {
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      padding-top: 80px;
-      color: #fff;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ma Valentine 💘</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-    }
+        body {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            font-family: 'Georgia', serif;
+            text-align: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-    p {
-      font-size: 1.4em;
-      margin-bottom: 40px;
-    }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+        }
 
-    button {
-      font-size: 1.2em;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      position: relative;
-    }
+        h1 {
+            font-size: clamp(2em, 8vw, 3em);
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
 
-    #yes {
-      background-color: #ff4d6d;
-      color: white;
-      margin-right: 20px;
-    }
+        h2 {
+            font-size: clamp(1.2em, 5vw, 1.8em);
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
 
-    #no {
-      background-color: #fff;
-      color: #ff4d6d;
-      position: absolute;
-    }
+        p {
+            font-size: clamp(1em, 4vw, 1.4em);
+            margin-bottom: 25px;
+        }
 
-    .heart {
-      position: absolute;
-      font-size: 24px;
-      animation: float 5s infinite ease-in;
-      opacity: 0.7;
-    }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            position: relative;
+            min-height: 150px;
+        }
 
-    @keyframes float {
-      0% {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh);
-        opacity: 0;
-      }
-    }
-  </style>
+        button {
+            font-size: clamp(1em, 4vw, 1.2em);
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            touch-action: manipulation;
+            font-family: 'Arial', sans-serif;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #yes {
+            background: linear-gradient(135deg, #ff4d6d, #ff758c);
+            color: white;
+            font-weight: bold;
+        }
+
+        #yes:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+        }
+
+        #no {
+            background-color: #fff;
+            color: #ff4d6d;
+            position: absolute;
+            font-weight: bold;
+        }
+
+        .heart {
+            position: fixed;
+            font-size: clamp(18px, 5vw, 28px);
+            animation: float 5s infinite ease-in;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
+        }
+
+        .success h1 {
+            font-size: clamp(1.8em, 8vw, 2.5em);
+            animation: pulse 1.5s infinite;
+            margin-bottom: 25px;
+        }
+
+        .success .love-message {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin: 20px 0;
+            font-size: clamp(1em, 4vw, 1.2em);
+            line-height: 1.8;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 2s ease-out;
+        }
+
+        .success .love-message p {
+            margin-bottom: 15px;
+        }
+
+        .success .love-message p:last-child {
+            margin-bottom: 0;
+            font-weight: bold;
+            font-size: clamp(1.1em, 4.5vw, 1.4em);
+        }
+
+        .success .signature {
+            font-style: italic;
+            margin-top: 20px;
+            font-size: clamp(1.2em, 5vw, 1.5em);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .big-hearts {
+            font-size: clamp(2em, 10vw, 3em);
+            margin: 15px 0;
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-10px);
+            }
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+    </style>
 </head>
+
 <body>
 
-  <h1>💖 Mon amour 💖</h1>
-  <p>J’ai une question très importante…</p>
-  <h2>Veux-tu être ma Valentine ? 💌</h2>
+    <!-- Audio romantique -->
+    <audio id="loveMusic" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
 
-  <button id="yes" onclick="accept()">OUI 😍</button>
-  <button id="no" onmouseover="moveNo()">Non 🙃</button>
+    <div class="container" id="main">
+        <h1>💖 Mon amour 💖</h1>
+        <p>J'ai une question très importante…</p>
+        <h2>Veux-tu être ma Valentine ? 💌</h2>
 
-  <script>
-    function accept() {
-      document.body.innerHTML = `
-        <h1>🥰 Yesssss ! 🥰</h1>
-        <p>Je savais que tu dirais oui ❤️</p>
-        <p>Je t’aime fort 💘</p>
+        <div class="buttons">
+            <button id="yes" onclick="accept()">OUI 😍</button>
+            <button id="no" onmouseover="moveNo()" ontouchstart="moveNo()">Non 🙃</button>
+        </div>
+    </div>
+
+    <script>
+        let music = document.getElementById('loveMusic');
+        let isMusicPlaying = false;
+
+        function vibrateHeartbeat() {
+            if ('vibrate' in navigator) {
+                navigator.vibrate([100, 50, 100, 200, 100, 50, 100]);
+            }
+        }
+
+        function playMusic() {
+            music.volume = 0.5;
+            music.play().then(() => {
+                isMusicPlaying = true;
+                updateMusicButton();
+            }).catch(err => {
+                console.log('Autoplay bloqué');
+            });
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                music.pause();
+                isMusicPlaying = false;
+            } else {
+                music.play();
+                isMusicPlaying = true;
+            }
+            updateMusicButton();
+        }
+
+        function updateMusicButton() {
+            const btn = document.getElementById('musicBtn');
+            if (btn) {
+                btn.textContent = isMusicPlaying ? '🔊' : '🔇';
+            }
+        }
+
+        function accept() {
+            playMusic();
+            vibrateHeartbeat();
+            setTimeout(vibrateHeartbeat, 1000);
+            setTimeout(vibrateHeartbeat, 2000);
+            setTimeout(vibrateHeartbeat, 3000);
+
+            const mainContainer = document.getElementById('main');
+            mainContainer.innerHTML = `
+        <div class="success">
+          <h1>🥰 Mon Amour 🥰</h1>
+          <div class="big-hearts">💕💖💕</div>
+          
+          <div class="love-message">
+            <p>Chaque jour avec toi est un cadeau,<br>
+            mais aujourd'hui j'avais envie de te le redire autrement.</p>
+            
+            <p>Merci d'être toi,<br>
+            merci pour ton sourire, ta douceur,<br>
+            et tout l'amour que tu mets dans ma vie.</p>
+            
+            <p>Je suis tellement heureux de partager ce chemin avec toi.</p>
+            
+            <p>Je t'aime plus que les mots ne peuvent le dire ❤️</p>
+          </div>
+          
+          <div class="signature">~ Ton Valentin 💘</div>
+        </div>
       `;
-    }
 
-    function moveNo() {
-      const no = document.getElementById("no");
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
-      no.style.left = x + "px";
-      no.style.top = y + "px";
-    }
+            const musicBtn = document.createElement('button');
+            musicBtn.id = 'musicBtn';
+            musicBtn.className = 'music-control';
+            musicBtn.textContent = '🔊';
+            musicBtn.onclick = toggleMusic;
+            document.body.appendChild(musicBtn);
+        }
 
-    // Coeurs qui flottent
-    setInterval(() => {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.innerHTML = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-      document.body.appendChild(heart);
+        function moveNo() {
+            const no = document.getElementById("no");
+            const maxX = window.innerWidth - 120;
+            const maxY = window.innerHeight - 80;
+            const x = Math.random() * maxX;
+            const y = Math.random() * maxY;
+            no.style.position = "fixed";
+            no.style.left = Math.max(10, Math.min(x, maxX)) + "px";
+            no.style.top = Math.max(10, Math.min(y, maxY)) + "px";
+        }
 
-      setTimeout(() => {
-        heart.remove();
-      }, 5000);
-    }, 500);
-  </script>
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.innerHTML = ["❤️", "💕", "💖", "💗", "💓"][Math.floor(Math.random() * 5)];
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 500);
+        }
+
+        startHearts();
+    </script>
 
 </body>
+
 </html>
