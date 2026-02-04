@@ -17,6 +17,7 @@
             font-family: 'Georgia', serif;
             text-align: center;
             min-height: 100vh;
+            min-height: 100dvh;
             padding: 40px 20px;
             color: #fff;
             overflow-x: hidden;
@@ -68,6 +69,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             touch-action: manipulation;
             font-family: 'Arial', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         button:active {
@@ -88,8 +90,8 @@
         #no {
             background-color: #fff;
             color: #ff4d6d;
-            position: absolute;
             font-weight: bold;
+            transition: none;
         }
 
         .heart {
@@ -126,6 +128,7 @@
         .success .love-message {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 25px 20px;
             margin: 20px 0;
@@ -198,12 +201,13 @@
             background: rgba(255, 255, 255, 0.9);
             border: none;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
+            width: 60px;
+            height: 60px;
+            font-size: 28px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             z-index: 1000;
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
@@ -221,38 +225,49 @@
         <h2>Veux-tu être ma Valentine ? 💌</h2>
 
         <div class="buttons">
-            <button id="yes" onclick="accept()">OUI 😍</button>
-            <button id="no" onmouseover="moveNo()" ontouchstart="moveNo()">Non 🙃</button>
+            <button id="yes">OUI 😍</button>
+            <button id="no">Non 🙃</button>
         </div>
     </div>
 
     <script>
-        let music = document.getElementById('loveMusic');
+        const music = document.getElementById('loveMusic');
         let isMusicPlaying = false;
+        let noButton = document.getElementById('no');
+        let yesButton = document.getElementById('yes');
 
+        // Vibration pattern coeur
         function vibrateHeartbeat() {
             if ('vibrate' in navigator) {
                 navigator.vibrate([100, 50, 100, 200, 100, 50, 100]);
             }
         }
 
+        // Play music
         function playMusic() {
-            music.volume = 0.5;
-            music.play().then(() => {
-                isMusicPlaying = true;
-                updateMusicButton();
-            }).catch(err => {
-                console.log('Autoplay bloqué');
-            });
+            music.volume = 0.7;
+            const playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isMusicPlaying = true;
+                    updateMusicButton();
+                }).catch(err => {
+                    console.log('Autoplay bloqué:', err);
+                    isMusicPlaying = false;
+                    updateMusicButton();
+                });
+            }
         }
 
+        // Toggle music
         function toggleMusic() {
             if (isMusicPlaying) {
                 music.pause();
                 isMusicPlaying = false;
             } else {
-                music.play();
-                isMusicPlaying = true;
+                music.play().then(() => {
+                    isMusicPlaying = true;
+                }).catch(err => console.log(err));
             }
             updateMusicButton();
         }
@@ -264,59 +279,135 @@
             }
         }
 
-        function accept() {
-            playMusic();
-            vibrateHeartbeat();
-            setTimeout(vibrateHeartbeat, 1000);
-            setTimeout(vibrateHeartbeat, 2000);
-            setTimeout(vibrateHeartbeat, 3000);
+        // BOUTON OUI - Clic
+        yesButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            accept();
+        });
 
-            const mainContainer = document.getElementById('main');
-            mainContainer.innerHTML = `
-        <div class="success">
-          <h1>🥰 Mon Amour 🥰</h1>
-          <div class="big-hearts">💕💖💕</div>
-          
-          <div class="love-message">
-            <p>Chaque jour avec toi est un cadeau,<br>
-            mais aujourd'hui j'avais envie de te le redire autrement.</p>
-            
-            <p>Merci d'être toi,<br>
-            merci pour ton sourire, ta douceur,<br>
-            et tout l'amour que tu mets dans ma vie.</p>
-            
-            <p>Je suis tellement heureux de partager ce chemin avec toi.</p>
-            
-            <p>Je t'aime plus que les mots ne peuvent le dire ❤️</p>
-          </div>
-          
-          <div class="signature">~ Ton Valentin 💘</div>
-        </div>
-      `;
+        // BOUTON NON - Empêcher le clic et juste bouger
+        noButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            moveNo();
+        });
 
-            const musicBtn = document.createElement('button');
-            musicBtn.id = 'musicBtn';
-            musicBtn.className = 'music-control';
-            musicBtn.textContent = '🔊';
-            musicBtn.onclick = toggleMusic;
-            document.body.appendChild(musicBtn);
-        }
+        noButton.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            moveNo();
+        }, { passive: false });
+
+        noButton.addEventListener('mouseenter', function (e) {
+            moveNo();
+        });
 
         function moveNo() {
-            const no = document.getElementById("no");
-            const maxX = window.innerWidth - 120;
-            const maxY = window.innerHeight - 80;
-            const x = Math.random() * maxX;
-            const y = Math.random() * maxY;
-            no.style.position = "fixed";
-            no.style.left = Math.max(10, Math.min(x, maxX)) + "px";
-            no.style.top = Math.max(10, Math.min(y, maxY)) + "px";
+            const padding = 20;
+            const btnWidth = noButton.offsetWidth;
+            const btnHeight = noButton.offsetHeight;
+
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+
+            const x = padding + Math.random() * (maxX - padding);
+            const y = padding + Math.random() * (maxY - padding);
+
+            noButton.style.position = "fixed";
+            noButton.style.left = x + "px";
+            noButton.style.top = y + "px";
+            noButton.style.zIndex = "100";
         }
 
+        function accept() {
+            // Vibrations
+            vibrateHeartbeat();
+            setTimeout(vibrateHeartbeat, 800);
+            setTimeout(vibrateHeartbeat, 1600);
+            setTimeout(vibrateHeartbeat, 2400);
+
+            // Play music
+            playMusic();
+
+            // Changer le contenu
+            document.body.innerHTML = `
+        <audio id="loveMusic" loop preload="auto">
+          <source src="Elgrandetoto BLUE LOVE Lyrics video.mp3" type="audio/mpeg">
+        </audio>
+        
+        <div class="container">
+          <div class="success">
+            <h1>🥰 Mon Amour 🥰</h1>
+            <div class="big-hearts">💕💖💕</div>
+            
+            <div class="love-message">
+              <p>Chaque jour avec toi est un cadeau,<br>
+              mais aujourd'hui j'avais envie de te le redire autrement.</p>
+              
+              <p>Merci d'être toi,<br>
+              merci pour ton sourire, ta douceur,<br>
+              et tout l'amour que tu mets dans ma vie.</p>
+              
+              <p>Je suis tellement heureux de partager ce chemin avec toi.</p>
+              
+              <p>Je t'aime plus que les mots ne peuvent le dire ❤️</p>
+            </div>
+            
+            <div class="signature">~ Ton Valentin 💘</div>
+          </div>
+        </div>
+        
+        <button class="music-control" id="musicBtn" onclick="toggleMusicNew()">🔊</button>
+      `;
+
+            // Re-setup music après changement du DOM
+            const newMusic = document.getElementById('loveMusic');
+            newMusic.volume = 0.7;
+            newMusic.play().then(() => {
+                isMusicPlaying = true;
+                document.getElementById('musicBtn').textContent = '🔊';
+            }).catch(err => {
+                isMusicPlaying = false;
+                document.getElementById('musicBtn').textContent = '🔇';
+            });
+
+            // Injecter la fonction toggle
+            window.toggleMusicNew = function () {
+                const m = document.getElementById('loveMusic');
+                const btn = document.getElementById('musicBtn');
+                if (isMusicPlaying) {
+                    m.pause();
+                    isMusicPlaying = false;
+                    btn.textContent = '🔇';
+                } else {
+                    m.play().then(() => {
+                        isMusicPlaying = true;
+                        btn.textContent = '🔊';
+                    });
+                }
+            };
+
+            // Coeurs flottants
+            startHeartsNew();
+        }
+
+        function startHeartsNew() {
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.className = "heart";
+                heart.innerHTML = ["❤️", "💕", "💖", "💗", "💓"][Math.floor(Math.random() * 5)];
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 500);
+        }
+
+        // Coeurs initiaux
         function startHearts() {
             setInterval(() => {
                 const heart = document.createElement("div");
-                heart.classList.add("heart");
+                heart.className = "heart";
                 heart.innerHTML = ["❤️", "💕", "💖", "💗", "💓"][Math.floor(Math.random() * 5)];
                 heart.style.left = Math.random() * 100 + "vw";
                 heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
